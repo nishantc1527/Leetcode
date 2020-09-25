@@ -2,6 +2,12 @@ import utils.TreeNode;
 
 public class SymmetricTree {
 
+  public static void main(String[] args) {
+    System.out.println(new SymmetricTree().isSymmetric(new TreeNode(1,
+            new TreeNode(2, new TreeNode(3), new TreeNode(4)),
+            new TreeNode(2, new TreeNode(4), new TreeNode(3)))));
+  }
+
   public boolean isSymmetric(TreeNode root) {
     return ans(root, root);
   }
