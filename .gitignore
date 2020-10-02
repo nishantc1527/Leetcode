@@ -1,6 +1,10 @@
 # Idea
 .idea/
 out/
+*.iml
 
 # Vim
 .vim/
+
+# Class Files
+*.class
