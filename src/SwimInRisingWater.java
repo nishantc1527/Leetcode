@@ -1,49 +1,42 @@
+import utils.Pair;
+
 import java.util.*;
 
 public class SwimInRisingWater {
 
   public static void main(String[] args) {
-    System.out.println(new SwimInRisingWater().swimInWater(new int[][]{{0, 1, 2, 3, 4}, {24, 23, 22, 21, 5}, {12, 13, 14, 15, 16}, {11, 17, 18, 19, 20}, {10, 9, 8, 7, 6}}));
+    System.out.println(new SwimInRisingWater().swimInWater(new int[][]{{0, 2},{1, 3}}));
   }
 
   public int swimInWater(int[][] grid) {
-    PriorityQueue<int[]> heap = new PriorityQueue<>(Comparator.comparingInt(a -> grid[a[0]][a[1]]));
-    heap.offer(new int[]{0, 0});
-    int max = 0;
-    boolean[] visited = new boolean[grid.length * grid.length];
+    PriorityQueue<Pair<Integer, Integer>> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(a -> grid[a.getKey()][a.getValue()]));
+    priorityQueue.offer(new Pair<>(0, 0));
+    boolean[][] visited = new boolean[grid.length][grid.length];
+    int max = -1;
 
-    while (!heap.isEmpty()) {
-      int[] index = heap.poll();
-      max = Math.max(max, grid[index[0]][index[1]]);
+    while(!priorityQueue.isEmpty()) {
+      Pair<Integer, Integer> top = priorityQueue.poll();
+      max = Math.max(max, grid[top.getKey()][top.getValue()]);
+      visited[top.getKey()][top.getValue()] = true;
 
-      visited[grid[index[0]][index[1]]] = true;
-
-      if (index[0] == grid.length - 1 && index[1] == grid.length - 1) {
+      if(top.getKey() == grid.length - 1 && top.getValue() == grid.length - 1) {
         return max;
       }
 
-      if (index[0] != grid.length - 1) {
-        if(!visited[grid[index[0] + 1][index[1]]]) {
-          heap.offer(new int[]{index[0] + 1, index[1]});
-        }
+      if (top.getKey() != 0 && !visited[top.getKey() - 1][top.getValue()]) {
+        priorityQueue.offer(new Pair<>(top.getKey() - 1, top.getValue()));
       }
 
-      if (index[1] != grid.length - 1) {
-        if (!visited[grid[index[0]][index[1] + 1]]) {
-          heap.offer(new int[]{index[0], index[1] + 1});
-        }
+      if (top.getValue() != 0 && !visited[top.getKey()][top.getValue() - 1]) {
+        priorityQueue.offer(new Pair<>(top.getKey(), top.getValue() - 1));
       }
 
-      if (index[0] != 0) {
-        if(!visited[grid[index[0] - 1][index[1]]]) {
-          heap.offer(new int[]{index[0] - 1, index[1]});
-        }
+      if (top.getKey() != grid.length - 1 && !visited[top.getKey() + 1][top.getValue()]) {
+        priorityQueue.offer(new Pair<>(top.getKey() + 1, top.getValue()));
       }
 
-      if (index[1] != 0) {
-        if (!visited[grid[index[0]][index[1] - 1]]) {
-          heap.offer(new int[]{index[0], index[1] - 1});
-        }
+      if (top.getValue() != grid.length - 1 && !visited[top.getKey()][top.getValue() + 1]) {
+        priorityQueue.offer(new Pair<>(top.getKey(), top.getValue() + 1));
       }
     }
 
