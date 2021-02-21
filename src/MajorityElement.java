@@ -5,25 +5,22 @@ public class MajorityElement {
   }
 
   public int majorityElement(int[] nums) {
-    int res = 0;
+    int count = 0;
+    int candidate = 0;
 
-    for(int i = 0; i < 32; i ++) {
-      int zeroes = 0, ones = 0;
-
-      for(int num : nums) {
-        if(((num >> i) & 1) == 0) {
-          zeroes ++;
-        } else {
-          ones ++;
-        }
+    for (int num : nums) {
+      if (count == 0) {
+        candidate = num;
       }
 
-      if(ones > zeroes) {
-        res |= (1 << i);
+      if(num == candidate) {
+        count ++;
+      } else {
+        count --;
       }
     }
 
-    return res;
+    return candidate;
   }
 
 }
